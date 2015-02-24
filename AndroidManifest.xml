@@ -23,7 +23,10 @@
             </intent-filter>
         </activity>
         
-        <service android:enabled="true" android:name="com.example.openglexample.service.SimpleService" />
+        <service android:enabled="true" android:name="com.example.openglexample.service.TriangleService" />
+        <activity android:name="TriangleActivity"></activity>
+        <activity android:name="BackgroundActivity"></activity>
+        <activity android:name="CubeActivity"></activity>
     </application>
 
 </manifest>

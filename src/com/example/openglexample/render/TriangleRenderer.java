@@ -11,11 +11,11 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
 
-public class SimpleRenderer implements Renderer {
+public class TriangleRenderer implements Renderer {
 
 	private Context mContext;
 	
-	public SimpleRenderer(Context context) {
+	public TriangleRenderer(Context context) {
 		mContext = context;
 	}
 	

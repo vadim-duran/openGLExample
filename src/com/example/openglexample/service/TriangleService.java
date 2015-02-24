@@ -3,9 +3,9 @@ package com.example.openglexample.service;
 import android.content.Context;
 import android.view.MotionEvent;
 
-import com.example.openglexample.render.SimpleRenderer;
+import com.example.openglexample.render.TriangleRenderer;
 
-public class SimpleService extends GLWallpaperService {
+public class TriangleService extends GLWallpaperService {
 
 	private Context mContext;
 	
@@ -15,7 +15,7 @@ public class SimpleService extends GLWallpaperService {
 		return engine;
 	}
 
-	public SimpleService(Context context) {
+	public TriangleService(Context context) {
 		super();
 		mContext = context;
 	}
@@ -31,12 +31,12 @@ public class SimpleService extends GLWallpaperService {
 	}
 
 	class MyEngine extends GLEngine {
-		private SimpleRenderer renderer;
+		private TriangleRenderer renderer;
 
 		public MyEngine() {
 			super();
 			setEGLContextClientVersion(2);
-			renderer = new SimpleRenderer(mContext);
+			renderer = new TriangleRenderer(mContext);
 			setRenderer(renderer);
 			setRenderMode(1);
 		}
