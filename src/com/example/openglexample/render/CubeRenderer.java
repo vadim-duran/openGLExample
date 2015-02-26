@@ -41,9 +41,8 @@ public class CubeRenderer implements Renderer{
 
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		gl.glDisable(GL10.GL_DITHER);
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
-		gl.glClearColor(.8f, 0f, .2f, 1f);
+		gl.glClearColor(0f, 1f, .2f, 1f);
 		gl.glClearDepthf(1f);
 	}
 

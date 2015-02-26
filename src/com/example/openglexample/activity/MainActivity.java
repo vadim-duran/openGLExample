@@ -23,8 +23,9 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
 	private final static int TRIANGLE_ITEM = 0;
 	private final static int BACKGROUND_ITEM = 1;
 	private final static int CUBE_ITEM = 2;
+	private final static int TRIANGLES_ITEM = 3;
 	private ListView mList;
-	private String[] mItems = {"Triangle", "Background", "Cube"};
+	private String[] mItems = {"Triangle", "Background", "Cube", "Triangles"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,10 @@ public class MainActivity extends ActionBarActivity implements OnItemClickListen
 			Intent intentCube = new Intent(mContext, CubeActivity.class);
 			startActivity(intentCube);
 			break;
-
+		case TRIANGLES_ITEM:
+			Intent intentTriangles = new Intent(mContext, TrianglesActivity.class);
+			startActivity(intentTriangles);
+			break;
 		default:
 			break;
 		}
