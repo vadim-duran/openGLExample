@@ -45,7 +45,6 @@ public class CubeRenderer implements Renderer{
 		gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT, GL10.GL_FASTEST);
 		gl.glClearColor(.8f, 0f, .2f, 1f);
 		gl.glClearDepthf(1f);
-		
 	}
 
 }

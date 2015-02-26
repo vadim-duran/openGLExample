@@ -1,5 +1,8 @@
-package com.example.openglexample;
+package com.example.openglexample.activity;
 
+import com.example.openglexample.R;
+import com.example.openglexample.R.id;
+import com.example.openglexample.R.menu;
 import com.example.openglexample.view.TriangleSurfaceView;
 
 import android.os.Bundle;

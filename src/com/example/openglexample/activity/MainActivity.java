@@ -1,4 +1,9 @@
-package com.example.openglexample;
+package com.example.openglexample.activity;
+
+import com.example.openglexample.R;
+import com.example.openglexample.R.id;
+import com.example.openglexample.R.layout;
+import com.example.openglexample.R.menu;
 
 import android.content.Context;
 import android.content.Intent;
