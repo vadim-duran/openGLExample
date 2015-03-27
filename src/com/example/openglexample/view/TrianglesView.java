@@ -18,6 +18,10 @@ public class TrianglesView {
 	private final FloatBuffer mTriangle3Vertices;
 	
 	private final int mBytesPerFloat = 4;
+	/**
+	 * Определяем матрицу ВИДА. Её можно рассматривать как камеру. Эта матрица описывает пространство;
+	 * она задает положение предметов относительно нашего глаза.
+	 */
 	private float[] mViewMatrix = new float[16];
 	
 	private int mMVPMatrixHandle;
@@ -105,57 +109,57 @@ public class TrianglesView {
 	
 	public void createProgramm(){
 		final String vertexShader =
-				"uniform mat4 u_MVPMatrix;      \n"		// A constant representing the combined model/view/projection matrix.
+				"uniform mat4 u_MVPMatrix;      \n"		// Константа отвечающая за комбинацию матриц МОДЕЛЬ/ВИД/ПРОЕКЦИЯ.
 				
-			  + "attribute vec4 a_Position;     \n"		// Per-vertex position information we will pass in.
-			  + "attribute vec4 a_Color;        \n"		// Per-vertex color information we will pass in.			  
+			  + "attribute vec4 a_Position;     \n"		// Информация о положении вершин.
+			  + "attribute vec4 a_Color;        \n"		// Информация о цвете вершин.			  
 			  
-			  + "varying vec4 v_Color;          \n"		// This will be passed into the fragment shader.
+			  + "varying vec4 v_Color;          \n"		// Это будет передано в фрагментный шейдер.
 			  
-			  + "void main()                    \n"		// The entry point for our vertex shader.
+			  + "void main()                    \n"		// Начало программы вершинного шейдера.
 			  + "{                              \n"
-			  + "   v_Color = a_Color;          \n"		// Pass the color through to the fragment shader. 
-			  											// It will be interpolated across the triangle.
-			  + "   gl_Position = u_MVPMatrix   \n" 	// gl_Position is a special variable used to store the final position.
-			  + "               * a_Position;   \n"     // Multiply the vertex by the matrix to get the final point in 			                                            			 
-			  + "}                              \n";    // normalized screen coordinates.
+			  + "   v_Color = a_Color;          \n"		// Передаем цвет для фрагментного шейдера.
+			  											// Он будет интерполирован для всего треугольника.
+			  + "   gl_Position = u_MVPMatrix   \n" 	// gl_Position специальные переменные используемые для хранения конечного положения.
+			  + "               * a_Position;   \n"     // Умножаем вершины на матрицу для получения конечного положения 		                                            			 
+			  + "}                              \n";    // в нормированных координатах экрана.
 			
 			final String fragmentShader =
-				"precision mediump float;       \n"		// Set the default precision to medium. We don't need as high of a 
-														// precision in the fragment shader.				
-			  + "varying vec4 v_Color;          \n"		// This is the color from the vertex shader interpolated across the 
-			  											// triangle per fragment.			  
-			  + "void main()                    \n"		// The entry point for our fragment shader.
-			  + "{                              \n"
-			  + "   gl_FragColor = v_Color;     \n"		// Pass the color directly through the pipeline.		  
-			  + "}                              \n";												
+				    "precision mediump float;       \n"     // Устанавливаем по умолчанию среднюю точность для переменных. Максимальная точность
+				                                            // в фрагментном шейдере не нужна.
+				  + "varying vec4 v_Color;          \n"     // Цвет вершинного шейдера преобразованного
+				                                            // для фрагмента треугольников.
+				  + "void main()                    \n"     // Точка входа для фрагментного шейдера.
+				  + "{                              \n"
+				  + "   gl_FragColor = v_Color;     \n"     // Передаем значения цветов.
+				  + "}                              \n";										
 			
-			// Load in the vertex shader.
+			// Загрузка вершинного шейдера.
 			int vertexShaderHandle = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
-
-			if (vertexShaderHandle != 0) 
+			 
+			if (vertexShaderHandle != 0)
 			{
-				// Pass in the shader source.
-				GLES20.glShaderSource(vertexShaderHandle, vertexShader);
-
-				// Compile the shader.
-				GLES20.glCompileShader(vertexShaderHandle);
-
-				// Get the compilation status.
-				final int[] compileStatus = new int[1];
-				GLES20.glGetShaderiv(vertexShaderHandle, GLES20.GL_COMPILE_STATUS, compileStatus, 0);
-
-				// If the compilation failed, delete the shader.
-				if (compileStatus[0] == 0) 
-				{				
-					GLES20.glDeleteShader(vertexShaderHandle);
-					vertexShaderHandle = 0;
-				}
+			    // Передаем в наш шейдер программу.
+			    GLES20.glShaderSource(vertexShaderHandle, vertexShader);
+			 
+			    // Компиляция шейреда
+			    GLES20.glCompileShader(vertexShaderHandle);
+			 
+			    // Получаем результат процесса компиляции
+			    final int[] compileStatus = new int[1];
+			    GLES20.glGetShaderiv(vertexShaderHandle, GLES20.GL_COMPILE_STATUS, compileStatus, 0);
+			 
+			    // Если компиляция не удалась, удаляем шейдер.
+			    if (compileStatus[0] == 0)
+			    {
+			        GLES20.glDeleteShader(vertexShaderHandle);
+			        vertexShaderHandle = 0;
+			    }
 			}
-
+			 
 			if (vertexShaderHandle == 0)
 			{
-				throw new RuntimeException("Error creating vertex shader.");
+			    throw new RuntimeException("Error creating vertex shader.");
 			}
 			
 			// Load in the fragment shader shader.
@@ -186,47 +190,47 @@ public class TrianglesView {
 				throw new RuntimeException("Error creating fragment shader.");
 			}
 			
-			// Create a program object and store the handle to it.
+			// Создаем объект программы вместе со ссылкой на нее.
 			int programHandle = GLES20.glCreateProgram();
-			
-			if (programHandle != 0) 
+			 
+			if (programHandle != 0)
 			{
-				// Bind the vertex shader to the program.
-				GLES20.glAttachShader(programHandle, vertexShaderHandle);			
-
-				// Bind the fragment shader to the program.
-				GLES20.glAttachShader(programHandle, fragmentShaderHandle);
-				
-				// Bind attributes
-				GLES20.glBindAttribLocation(programHandle, 0, "a_Position");
-				GLES20.glBindAttribLocation(programHandle, 1, "a_Color");
-				
-				// Link the two shaders together into a program.
-				GLES20.glLinkProgram(programHandle);
-
-				// Get the link status.
-				final int[] linkStatus = new int[1];
-				GLES20.glGetProgramiv(programHandle, GLES20.GL_LINK_STATUS, linkStatus, 0);
-
-				// If the link failed, delete the program.
-				if (linkStatus[0] == 0) 
-				{				
-					GLES20.glDeleteProgram(programHandle);
-					programHandle = 0;
-				}
+			    // Подключаем вершинный шейдер к программе.
+			    GLES20.glAttachShader(programHandle, vertexShaderHandle);
+			 
+			    // Подключаем фрагментный шейдер к программе.
+			    GLES20.glAttachShader(programHandle, fragmentShaderHandle);
+			 
+			    // Подключаем атрибуты цвета и положения
+			    GLES20.glBindAttribLocation(programHandle, 0, "a_Position");
+			    GLES20.glBindAttribLocation(programHandle, 1, "a_Color");
+			 
+			    // Объединяем оба шейдера в программе.
+			    GLES20.glLinkProgram(programHandle);
+			 
+			    // Получаем ссылку на программу.
+			    final int[] linkStatus = new int[1];
+			    GLES20.glGetProgramiv(programHandle, GLES20.GL_LINK_STATUS, linkStatus, 0);
+			 
+			    // Если ссылку не удалось получить, удаляем программу.
+			    if (linkStatus[0] == 0)
+			    {
+			        GLES20.glDeleteProgram(programHandle);
+			        programHandle = 0;
+			    }
 			}
-			
+			 
 			if (programHandle == 0)
 			{
-				throw new RuntimeException("Error creating program.");
+			    throw new RuntimeException("Error creating program.");
 			}
 	        
-	        // Set program handles. These will later be used to pass in values to the program.
+			// Установить настройки вручную. Это будет позже использовано для передачи значений в программу.
 	        mMVPMatrixHandle = GLES20.glGetUniformLocation(programHandle, "u_MVPMatrix");        
 	        mPositionHandle = GLES20.glGetAttribLocation(programHandle, "a_Position");
 	        mColorHandle = GLES20.glGetAttribLocation(programHandle, "a_Color");        
 	        
-	        // Tell OpenGL to use this program when rendering.
+	     	// Сообщить OpenGL чтобы использовал эту программу при рендеринге.
 	        GLES20.glUseProgram(programHandle); 
 	}
 	
